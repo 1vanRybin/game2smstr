@@ -26,10 +26,6 @@
 *.lib
 *.sbr
 *.sdf
-*.lock
-*.ide
-*.ide-shm
-*.ide-wal
 ipch/
 obj/
 [Bb]in
@@ -59,7 +55,3 @@ monodroid*.msi
 /CompiledContent/Windows/IgnoreMe.dll
 *.cachefile
 *.dll
-*.VC.db
-*.VC.opendb
-
-artifacts/
