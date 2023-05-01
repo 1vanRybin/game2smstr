@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MazeEscape;
 
-public class Player
+public class Player : ICreature
 {
     int health;
     public Vector2 Position { get; set; }
@@ -18,4 +18,8 @@ public class Player
         isAlive = true;
     }
 
+    public bool CanMove(Maze maze, Vector2 point)
+    {
+        return !(maze.WallsMap[(int)point.X/Controller.ElementSize,(int)point.Y/ Controller.ElementSize] is Wall);
+    }
 }

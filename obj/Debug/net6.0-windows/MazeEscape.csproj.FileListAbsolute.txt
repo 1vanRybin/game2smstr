@@ -37,3 +37,4 @@ C:\Desktop\Учёба\Прога\c# proj\Игра\MazeEscape\obj\Debug\net6.0-wi
 C:\Desktop\Учёба\Прога\c# proj\Игра\MazeEscape\obj\Debug\net6.0-windows\ref\MazeEscape.dll
 C:\Desktop\Учёба\Прога\c# proj\Игра\MazeEscape\bin\Debug\net6.0-windows\Content\Assets\player.xnb
 C:\Desktop\Учёба\Прога\c# proj\Игра\MazeEscape\bin\Debug\net6.0-windows\Content\Assets\monster.xnb
+C:\Desktop\Учёба\Прога\c# proj\Игра\MazeEscape\bin\Debug\net6.0-windows\Content\Assets\wall.xnb

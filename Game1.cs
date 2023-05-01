@@ -9,19 +9,22 @@ public class Game1 : Game
     GraphicsDeviceManager graphics;
     SpriteBatch spriteBatch;
     Texture2D playerTexture;
+    Texture2D monsterTexture;
+    Texture2D wallTexture;
     Player player;
+    Maze maze = new();
 
     public Game1()
     {
         graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-        graphics.PreferredBackBufferWidth = 1200;
-        graphics.PreferredBackBufferHeight = 900;
+        graphics.PreferredBackBufferWidth = maze.Width;
+        graphics.PreferredBackBufferHeight = maze.Height;
         //IsMouseVisible = true;
     }
     void StartGame()
     {
-        player = new Player(15, 15, 100);
+        player = new Player(50, 50, 100);
     }
     protected override void Initialize()
     {
@@ -33,6 +36,8 @@ public class Game1 : Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
         playerTexture = Content.Load<Texture2D>("Assets/player");
+        wallTexture = Content.Load <Texture2D>("Assets/wall");
+        monsterTexture = Content.Load<Texture2D>("Assets/monster");
     }
 
     protected override void Update(GameTime gameTime)
@@ -40,7 +45,7 @@ public class Game1 : Game
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        Controller.ControlPlayer(player);
+        Controller.ControlPlayer(player, maze);
 
         base.Update(gameTime);
     }
@@ -51,7 +56,11 @@ public class Game1 : Game
 
         spriteBatch.Begin();
         spriteBatch.Draw(playerTexture, new Rectangle((int)player.Position.X, (int)player.Position.Y,
-            50, 50), Color.White);
+            Controller.ElementSize, Controller.ElementSize), Color.White);
+        foreach (var wall in maze.WallsMap)
+            if(wall!=null)
+                spriteBatch.Draw(wallTexture, new Rectangle((int)wall.Position.X, (int)wall.Position.Y,
+                    Controller.ElementSize, Controller.ElementSize), Color.White);
         spriteBatch.End();
 
         base.Draw(gameTime);
