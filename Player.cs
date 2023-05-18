@@ -6,20 +6,15 @@ namespace MazeEscape;
 
 public class Player : ICreature
 {
-    int health;
+    public int Health { get; set; }
     public Vector2 Position { get; set; }
-    bool isAlive;
+    public bool IsAlive { get; set; }
 
 
-    public Player(int x, int y, int health)
+    public Player(int x, int y)
     {
-        Position = new Vector2(x, y);
-        this.health = health;
-        isAlive = true;
-    }
-
-    public bool CanMove(Maze maze, Vector2 point)
-    {
-        return !(maze.WallsMap[(int)point.X/Controller.ElementSize,(int)point.Y/ Controller.ElementSize] is Wall);
+        Position = new Vector2(x * Controller.ElementSize, y*Controller.ElementSize);
+        IsAlive = true;
+        Health = 100;
     }
 }

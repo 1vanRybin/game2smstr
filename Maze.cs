@@ -18,7 +18,13 @@ public class Maze
         Width = WallsMap.GetLength(0) * Controller.ElementSize;
         Height = WallsMap.GetLength(1) * Controller.ElementSize;
     }
-    public Wall[,] CreateMaze()
+    public Maze(Maze maze)
+    {
+        WallsMap = maze.WallsMap;
+        Width = maze.Width;
+        Height = maze.Height;
+    }
+    Wall[,] CreateMaze()
     {
         var rows = maze1.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
         var result = new Wall[rows[0].Length, rows.Length];

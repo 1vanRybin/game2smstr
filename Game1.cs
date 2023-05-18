@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -12,6 +16,7 @@ public class Game1 : Game
     Texture2D monsterTexture;
     Texture2D wallTexture;
     Player player;
+    List<Monster> monsters;
     Maze maze = new();
 
     public Game1()
@@ -24,7 +29,9 @@ public class Game1 : Game
     }
     void StartGame()
     {
-        player = new Player(50, 50, 100);
+        player = new Player(1, 1);
+        monsters = new List<Monster>()
+        { new Monster(5, 5)};
     }
     protected override void Initialize()
     {
@@ -46,7 +53,10 @@ public class Game1 : Game
             Exit();
 
         Controller.ControlPlayer(player, maze);
-
+        
+        foreach (var monster in monsters)
+            Controller.ControlMonster(monster, maze, player);
+       
         base.Update(gameTime);
     }
 
@@ -57,6 +67,11 @@ public class Game1 : Game
         spriteBatch.Begin();
         spriteBatch.Draw(playerTexture, new Rectangle((int)player.Position.X, (int)player.Position.Y,
             Controller.ElementSize, Controller.ElementSize), Color.White);
+        foreach(var monster in monsters)
+        {
+            spriteBatch.Draw(monsterTexture, new Rectangle((int)monster.Position.X, (int)monster.Position.Y,
+                Controller.ElementSize, Controller.ElementSize), Color.White);
+        }
         foreach (var wall in maze.WallsMap)
             if(wall!=null)
                 spriteBatch.Draw(wallTexture, new Rectangle((int)wall.Position.X, (int)wall.Position.Y,

@@ -1,5 +1,5 @@
 ﻿using System.Data;
-using System.Numerics;
+using Microsoft.Xna.Framework;
 
 namespace MazeEscape;
 

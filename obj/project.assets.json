@@ -7481,11 +7481,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Desktop\\Учёба\\Прога\\c# proj\\Игра\\MazeEscape\\MazeEscape.csproj",
+      "projectUniqueName": "C:\\Desktop\\Education\\Coding\\c# proj\\Игра\\MazeEscape\\MazeEscape.csproj",
       "projectName": "MazeEscape",
-      "projectPath": "C:\\Desktop\\Учёба\\Прога\\c# proj\\Игра\\MazeEscape\\MazeEscape.csproj",
+      "projectPath": "C:\\Desktop\\Education\\Coding\\c# proj\\Игра\\MazeEscape\\MazeEscape.csproj",
       "packagesPath": "C:\\Users\\Office\\.nuget\\packages\\",
-      "outputPath": "C:\\Desktop\\Учёба\\Прога\\c# proj\\Игра\\MazeEscape\\obj\\",
+      "outputPath": "C:\\Desktop\\Education\\Coding\\c# proj\\Игра\\MazeEscape\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
