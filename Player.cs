@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MazeEscape;
 
-public class Player : ICreature
+public class Player : IMap
 {
     public int Health { get; set; }
     public Vector2 Position { get; set; }

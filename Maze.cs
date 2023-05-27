@@ -8,7 +8,7 @@ namespace MazeEscape;
 
 public class Maze
 {
-    public Wall[,] WallsMap { get; set; }
+    public IMap[,] WallsMap { get; set; }
     public readonly int Height;
     public readonly int Width;
 
@@ -24,21 +24,36 @@ public class Maze
         Width = maze.Width;
         Height = maze.Height;
     }
-    Wall[,] CreateMaze()
+    IMap[,] CreateMaze()
     {
         var rows = maze1.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
-        var result = new Wall[rows[0].Length, rows.Length];
+        var result = new IMap[rows[0].Length, rows.Length];
 
         for (var x = 0; x < rows[0].Length; x++)
             for (var y = 0; y < rows.Length; y++)
+            {
                 if (rows[y][x] == '1')
-                    result[x, y] = new Wall(x * Controller.ElementSize, y * Controller.ElementSize);
+                    result[x, y] = new Wall(x, y);
+                if (rows[y][x] == 'P')
+                {
+                    var player = new Player(x, y);
+                    result[x, y] = player;
+                    MazeEscape.Player = player;
+                }
+
+                if (rows[y][x] == 'M')
+                {
+                    var monster = new Monster(x, y);
+                    result[x, y] = monster;
+                    MazeEscape.Monsters.Add(monster);
+                }
+            }
         return result;
     }
 
     string maze1 =
       @"111111111111111111
-100111111000000001
+10P111111000000001
 100000001111110001
 111101111000000001
 100100000000000001
@@ -46,10 +61,10 @@ public class Maze
 100100000000000001
 100100001111100001
 100100000001110001
-100100000000000001
+1001000000M0000001
 100100000000000001
 100000011111111111
-100011111000000001
+100011111000M00001
 100000000000000001
 100111111100000001
 111111111111111111";

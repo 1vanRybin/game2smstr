@@ -26,7 +26,6 @@ public static class Controller
         var keyState = Keyboard.GetState(); 
         var pressedKey = keyState.GetPressedKeys().FirstOrDefault();
 
-        
         if (MovePosition.ContainsKey(pressedKey) && IsPlayerMove)
         {
             var possiblePoint = player.Position + MovePosition[pressedKey] * ElementSize;
@@ -38,12 +37,13 @@ public static class Controller
         }
     }
 
-    static public void ControlMonster(Monster monster, Maze maze, Player player)
+    static public void ControlMonsters(List<Monster> monsters, Maze maze, Player player)
     {
         if(!IsPlayerMove)
         {
+            foreach(var monster in monsters)
+                monster.Position = monster.GetNextMove(maze, player) * ElementSize;
             IsPlayerMove = true;
-            monster.Position = monster.GetNextMove(maze, player) * ElementSize;
         }
     }
 
@@ -51,4 +51,15 @@ public static class Controller
     {
         return !(maze.WallsMap[(int)point.X / ElementSize, (int)point.Y / ElementSize] is Wall);
     }
+
+    static public void GameOver()
+    {
+        KeyboardState keyState = Keyboard.GetState();
+        if (keyState.IsKeyDown(Keys.Enter))
+        {
+            MazeEscape.StartGame();
+        }
+    }
+
+
 }

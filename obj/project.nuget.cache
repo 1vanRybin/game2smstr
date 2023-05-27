@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EByBI5DOErl9eQBY9hx64oe+8IWJ3rt1Nm278McIuUiXpe90diuaHJiURtuWCM0h6M5l8+vm7IQjSgk2XFs7jg==",
+  "dgSpecHash": "4h4SdtKJybI39E/JY1PL6KxBFMI2RQgs1obaFOg80c/kANk9ZhMj+uB8RuYJvt2E/4T4A0G3S458XPeKjBsxww==",
   "success": true,
-  "projectFilePath": "C:\\Desktop\\Education\\Coding\\c# proj\\Игра\\MazeEscape\\MazeEscape.csproj",
+  "projectFilePath": "C:\\Users\\Office\\Documents\\GitHub\\game2smstr\\MazeEscape.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Office\\.nuget\\packages\\libuv\\1.9.1\\libuv.1.9.1.nupkg.sha512",
     "C:\\Users\\Office\\.nuget\\packages\\microsoft.codeanalysis.analyzers\\1.1.0\\microsoft.codeanalysis.analyzers.1.1.0.nupkg.sha512",

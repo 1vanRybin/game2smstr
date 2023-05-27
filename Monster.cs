@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace MazeEscape;
 
-public class Monster : ICreature
+public class Monster : IMap
 {
     public Vector2 Position { get; set; }
     public int Health { get; set; }
@@ -34,7 +34,6 @@ public class Monster : ICreature
 
     public Vector2 GetNextMove(Maze maze, Player player)
     {
-        var res = player.Position / Controller.ElementSize;
         var pointConnections = new Dictionary<Vector2, Vector2>();
 
         var map = new State[maze.WallsMap.GetLength(0), maze.WallsMap.GetLength(1)];
@@ -54,7 +53,7 @@ public class Monster : ICreature
 
             if (point == Position / Controller.ElementSize)
             {
-                return pointConnections[point];
+                return pointConnections.ContainsKey(point) ? pointConnections[point] : Vector2.Zero;
             }
 
             if (point.X < 0 || point.X >= map.GetLength(0) || point.Y < 0 || point.Y >= map.GetLength(1)) continue;

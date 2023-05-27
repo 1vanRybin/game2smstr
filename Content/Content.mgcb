@@ -37,6 +37,13 @@
 /processorParam:TextureFormat=Color
 /build:Assets/player.png
 
+#begin Assets/Text.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Assets/Text.spritefont
+
 #begin Assets/wall.png
 /importer:TextureImporter
 /processor:TextureProcessor
