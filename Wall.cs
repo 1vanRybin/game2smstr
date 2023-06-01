@@ -3,12 +3,12 @@ using Microsoft.Xna.Framework;
 
 namespace MazeEscape;
 
-public class Wall : IMap
+public class Wall : IMap, IObstacle
 {
     public Vector2 Position { get; set; }
 
     public Wall(int x, int y)
     {
-        Position = new Vector2(x * Controller.ElementSize, y * Controller.ElementSize);
+        Position = new Vector2(x * GameController.ElementSize, y * GameController.ElementSize);
     }
 }

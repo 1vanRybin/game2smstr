@@ -1,29 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using SharpDX.MediaFoundation;
+using Microsoft.Xna.Framework;
+using System.IO;
 
 namespace MazeEscape;
 
 public class Maze
 {
-    public IMap[,] WallsMap { get; set; }
+    public IMap[,] Map { get; set; }
     public readonly int Height;
     public readonly int Width;
 
     public Maze()
     {
-        WallsMap = CreateMaze();
-        Width = WallsMap.GetLength(0) * Controller.ElementSize;
-        Height = WallsMap.GetLength(1) * Controller.ElementSize;
+        Map = CreateMaze();
+        Width = Map.GetLength(0) * GameController.ElementSize;
+        Height = Map.GetLength(1) * GameController.ElementSize;
     }
+
     public Maze(Maze maze)
     {
-        WallsMap = maze.WallsMap;
+        Map = maze.Map;
         Width = maze.Width;
         Height = maze.Height;
     }
+    public IMap GetItem(Vector2 point) =>
+        Map[(int)point.X / GameController.ElementSize, (int)point.Y / GameController.ElementSize];
+    
+    void SetPosition(Vector2 position, IMap item) =>
+            Map[(int)position.X / GameController.ElementSize, (int)position.Y / GameController.ElementSize] = item;
+    
+
+    public void Add(IMap item, Vector2 position)=>
+            SetPosition(position, item);
+    
+
+    public void Remove(Vector2 position)=>
+            SetPosition(position, null);
+    
+
     IMap[,] CreateMaze()
     {
         var rows = maze1.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
@@ -51,21 +65,6 @@ public class Maze
         return result;
     }
 
-    string maze1 =
-      @"111111111111111111
-10P111111000000001
-100000001111110001
-111101111000000001
-100100000000000001
-100100000000000001
-100100000000000001
-100100001111100001
-100100000001110001
-1001000000M0000001
-100100000000000001
-100000011111111111
-100011111000M00001
-100000000000000001
-100111111100000001
-111111111111111111";
+    string maze1 = File.ReadAllText("Maze1.txt");
+      
 }

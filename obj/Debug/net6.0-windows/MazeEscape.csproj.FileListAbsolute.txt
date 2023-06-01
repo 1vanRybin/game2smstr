@@ -119,3 +119,5 @@ C:\Users\Office\Documents\GitHub\game2smstr\obj\Debug\net6.0-windows\MazeEscape.
 C:\Users\Office\Documents\GitHub\game2smstr\obj\Debug\net6.0-windows\MazeEscape.genruntimeconfig.cache
 C:\Users\Office\Documents\GitHub\game2smstr\obj\Debug\net6.0-windows\ref\MazeEscape.dll
 C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\Text.xnb
+C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\maze.xnb
+C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\bullet.xnb

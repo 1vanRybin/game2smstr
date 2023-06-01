@@ -15,10 +15,17 @@ public static class MenuController
         { Keys.Down, ()=> ChangeState(MenuState.Exit, MenuState.StartGame, 1) },
         { Keys.Up, ()=> ChangeState(MenuState.StartGame, MenuState.Exit, -1) }
     };
+
+    static Dictionary<MenuState, Mode> modes = new()
+    {
+        { MenuState.StartGame, Mode.Game},
+        { MenuState.Rules, Mode.Rules},
+        { MenuState.Exit, Mode.Exit}
+    };
     public static MenuState State { get; private set; }
 
 
-    static public bool Control()
+    static public void Control()
     {
         KeyboardState keyState = Keyboard.GetState();
         var pressedKey = keyState.GetPressedKeys().FirstOrDefault();
@@ -29,17 +36,8 @@ public static class MenuController
         else
             menuChecker = true;
 
-        if (keyState.IsKeyDown(Keys.Enter))
-        {
-            if (State == MenuState.StartGame)
-                MazeEscape.mode = "Game";
-            if (State == MenuState.Shop)
-                MazeEscape.mode = "Shop";
-            if (State == MenuState.Exit)
-                return true;
-            menuChecker = true;
-        }
-        return false;
+        if (keyState.IsKeyDown(Keys.Enter) && modes.ContainsKey(State))
+            MazeEscape.Mode = modes[State];
     }
 
     private static void ChangeState(MenuState from, MenuState to, int direction)
