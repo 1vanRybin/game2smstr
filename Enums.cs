@@ -6,6 +6,7 @@ public enum Mode
     Game,
     Rules,
     GameOver,
+    WinGame,
     Exit
 }
 

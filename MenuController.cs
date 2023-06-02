@@ -37,7 +37,7 @@ public static class MenuController
             menuChecker = true;
 
         if (keyState.IsKeyDown(Keys.Enter) && modes.ContainsKey(State))
-            MazeEscape.Mode = modes[State];
+            MazeEscape.CurrentMode = modes[State];
     }
 
     private static void ChangeState(MenuState from, MenuState to, int direction)

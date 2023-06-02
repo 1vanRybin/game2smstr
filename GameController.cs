@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
@@ -11,8 +13,8 @@ public static class GameController
 {
     public const int ElementSize = 50;
     public const float TurnTime = 100;
-
-    static Dictionary<Keys, Vector2> MovePosition = new()
+    static int currentLvl = 0;
+    static readonly Dictionary<Keys, Vector2> MovePosition = new()
     {
         {Keys.W, -Vector2.UnitY}, 
         {Keys.S, Vector2.UnitY}, 
@@ -26,9 +28,10 @@ public static class GameController
         if (player.Health <= 0)
         {
             player.Health = 0;
-            MazeEscape.Mode = Mode.GameOver;
+            MazeEscape.CurrentMode = Mode.GameOver;
             return;
         }
+
         var mouseState = Mouse.GetState();
         var keyState = Keyboard.GetState();
         var pressedKey = keyState.GetPressedKeys().FirstOrDefault();
@@ -48,7 +51,18 @@ public static class GameController
                 var possiblePoint = player.Position + MovePosition[pressedKey] * ElementSize;
                 if (CanMove(maze, possiblePoint))
                 {
-                    player.Position = possiblePoint;
+                    if (maze.GetItem(possiblePoint) is Exit)
+                    {
+                        currentLvl++;
+                        if (currentLvl < MazeEscape.Mazes.Count)
+                            MazeEscape.CurrentMaze = new Maze(File.ReadAllText(MazeEscape.Mazes[currentLvl]));
+                        else
+                        {
+                            currentLvl = 0;
+                            MazeEscape.CurrentMode = Mode.WinGame;
+                        }
+                    }
+                    maze.Rearrange(player, possiblePoint);
                     IsPlayerMove = false;
                 }
             }
@@ -73,23 +87,29 @@ public static class GameController
 
             if (maze.GetItem(bullet.Position) is Monster monster)
                 monster.Health -= Bullet.Damage;
-            
         }
     }
 
     static public void ControlMonsters(List<Monster> monsters, Maze maze, Player player)
     {
-
         if (!IsPlayerMove)
         {
-            Parallel.ForEach(monsters, monster =>
+            var rnd = new Random();
+            for (int i = 1; i <= rnd.Next(1, 3); i++)
             {
-                maze.Remove(monster.Position);
-                monster.Position = monster.GetNextMove(maze, player) * ElementSize;
-                maze.Add(monster, monster.Position);
+                Parallel.ForEach(monsters, monster =>
+                {
+                    var nextMove = monster.GetNextMove(maze, player) * ElementSize;
+                    if (nextMove == player.Position)
+                    {
+                        player.Health -= monster.Damage;
+                        monster.Health = 0;
+                    }
+                    else
+                        maze.Rearrange(monster, nextMove);
+                });
+                Task.WaitAll();
             }
-            );
-            Task.WaitAll();
             IsPlayerMove = true;
         }
     }
@@ -97,12 +117,10 @@ public static class GameController
     static public bool CanMove(Maze maze, Vector2 point)=>
                     maze.GetItem(point) is not IObstacle;
     
-    static public void GameOver()
+    static public void IsNewGame()
     {
         KeyboardState keyState = Keyboard.GetState();
         if (keyState.IsKeyDown(Keys.X))
-        {
-            MazeEscape.StartGame();
-        }
+            MazeEscape.StartGame(currentLvl);
     }
 }

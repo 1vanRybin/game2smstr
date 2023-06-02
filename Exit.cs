@@ -1,13 +1,13 @@
-﻿using System.Data;
+﻿using System.Reflection.Metadata.Ecma335;
 using Microsoft.Xna.Framework;
 
 namespace MazeEscape;
 
-public class Wall : IMap, IObstacle
+public class Exit : IMap
 {
     public Vector2 Position { get; set; }
 
-    public Wall(int x, int y)
+    public Exit(int x, int y)
     {
         Position = new Vector2(x, y) * GameController.ElementSize;
     }

@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
-using System.IO;
 
 namespace MazeEscape;
 
@@ -10,9 +9,9 @@ public class Maze
     public readonly int Height;
     public readonly int Width;
 
-    public Maze()
+    public Maze(string maze)
     {
-        Map = CreateMaze();
+        Map = CreateMaze(maze);
         Width = Map.GetLength(0) * GameController.ElementSize;
         Height = Map.GetLength(1) * GameController.ElementSize;
     }
@@ -23,48 +22,54 @@ public class Maze
         Width = maze.Width;
         Height = maze.Height;
     }
+
     public IMap GetItem(Vector2 point) =>
-        Map[(int)point.X / GameController.ElementSize, (int)point.Y / GameController.ElementSize];
+            Map[(int)point.X / GameController.ElementSize, (int)point.Y / GameController.ElementSize];
     
     void SetPosition(Vector2 position, IMap item) =>
             Map[(int)position.X / GameController.ElementSize, (int)position.Y / GameController.ElementSize] = item;
     
-
     public void Add(IMap item, Vector2 position)=>
             SetPosition(position, item);
     
-
     public void Remove(Vector2 position)=>
             SetPosition(position, null);
     
-
-    IMap[,] CreateMaze()
+    public void Rearrange(IMap item, Vector2 nextPoint)
     {
-        var rows = maze1.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
+        Remove(item.Position);
+        item.Position = nextPoint;
+        Add(item, item.Position);
+    }
+
+    IMap[,] CreateMaze(string maze)
+    {
+        var rows = maze.Split(new[] {"\r\n"}, StringSplitOptions.RemoveEmptyEntries);
         var result = new IMap[rows[0].Length, rows.Length];
 
         for (var x = 0; x < rows[0].Length; x++)
             for (var y = 0; y < rows.Length; y++)
             {
-                if (rows[y][x] == '1')
-                    result[x, y] = new Wall(x, y);
-                if (rows[y][x] == 'P')
+                switch (rows[y][x])
                 {
-                    var player = new Player(x, y);
-                    result[x, y] = player;
-                    MazeEscape.Player = player;
-                }
-
-                if (rows[y][x] == 'M')
-                {
-                    var monster = new Monster(x, y);
-                    result[x, y] = monster;
-                    MazeEscape.Monsters.Add(monster);
+                    case '1':
+                        result[x, y] = new Wall(x, y);
+                        break;
+                    case 'P':
+                        var player = new Player(x, y);
+                        result[x, y] = player;
+                        MazeEscape.Player = player;
+                        break;
+                    case 'M':
+                        var monster = new Monster(x, y);
+                        result[x, y] = monster;
+                        MazeEscape.Monsters.Add(monster);
+                        break;
+                    case 'E':
+                        result[x, y] = new Exit(x, y);
+                        break;
                 }
             }
         return result;
     }
-
-    string maze1 = File.ReadAllText("Maze1.txt");
-      
 }

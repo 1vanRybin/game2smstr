@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct2D1.Effects;
-using SharpDX.XInput;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace MazeEscape;
 public partial class MazeEscape : Game
@@ -18,28 +15,29 @@ public partial class MazeEscape : Game
     public static Player Player { get; set; }
     public static List<Monster> Monsters { get; set; }
     public static Bullet Bullet { get; set; }
-    static Maze maze;
-    public static Mode Mode { get; set; }
+    public static Mode CurrentMode { get; set; }
+    public static Maze CurrentMaze { get; set; }
+    public static List<string> Mazes { get; set; }
+
     static float turnTimer;
     public MazeEscape()
     {
+        Mazes = new() { "Maze1.txt", "Maze2.txt", "Maze3.txt", "Maze4.txt" };
         Content.RootDirectory = "Content";
-        Monsters = new();
-        maze = new();
         graphics = new GraphicsDeviceManager(this);
-        graphics.PreferredBackBufferWidth = maze.Width;
-        graphics.PreferredBackBufferHeight = maze.Height;
+        graphics.PreferredBackBufferWidth = 1800;
+        graphics.PreferredBackBufferHeight = 800;
         IsMouseVisible = true;
     }
-    public static void StartGame()
+    public static void StartGame(int level)
     {
         Monsters = new();
-        maze = new();
-        Mode = Mode.Menu;
+        CurrentMaze = new Maze(File.ReadAllText(Mazes[level]));
+        CurrentMode = Mode.Menu;
     }
     protected override void Initialize()
     {
-        StartGame();
+        StartGame(0);
         base.Initialize();
     }
 
@@ -54,43 +52,37 @@ public partial class MazeEscape : Game
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        if (Mode == Mode.Menu)
+        if (CurrentMode == Mode.Menu)
             
             MenuController.Control();
 
-        if (Mode == Mode.Game)
+        if (CurrentMode == Mode.Game)
         {
             turnTimer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             
-            GameController.ControlPlayer(Player, maze, ref turnTimer);
-            GameController.ControlBullet(Bullet, maze);
-            GameController.ControlMonsters(Monsters, maze, Player);
+            GameController.ControlPlayer(Player, CurrentMaze, ref turnTimer);
+            GameController.ControlBullet(Bullet, CurrentMaze);
+            GameController.ControlMonsters(Monsters, CurrentMaze, Player);
 
-            foreach (var monster in Monsters.ToArray())
+            foreach(var monster in Monsters.ToArray())
             {
-                if (monster.Position == Player.Position)
-                {
-                    Player.Health -= monster.Damage;
-                    monster.Health = 0;
-                }
-
                 if (monster.Health <= 0)
                 {
                     monster.Health = 0;
                     Monsters.Remove(monster);
-                    maze.Remove(monster.Position);
+                    CurrentMaze.Remove(monster.Position);
                 }
             }
         }
 
-        if (Mode == Mode.Rules)
+        if (CurrentMode == Mode.Rules)
             if (Keyboard.GetState().IsKeyDown(Keys.X))
-                Mode = Mode.Menu;
+                CurrentMode = Mode.Menu;
 
-        if (Mode == Mode.GameOver)
-            GameController.GameOver();
+        if (CurrentMode == Mode.GameOver || CurrentMode == Mode.WinGame)
+            GameController.IsNewGame();
 
-        if (Mode == Mode.Exit)
+        if (CurrentMode == Mode.Exit)
             Exit();
 
         base.Update(gameTime);

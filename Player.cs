@@ -15,7 +15,7 @@ public class Player : IMap
 
     public Player(int x, int y)
     {
-        Position = new Vector2(x * GameController.ElementSize, y * GameController.ElementSize);
+        Position = new Vector2(x, y) * GameController.ElementSize;
         IsHavePick = true;
         Health = 100;
         Skills = new();
