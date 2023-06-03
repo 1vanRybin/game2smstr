@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace MazeEscape;
 
