@@ -123,3 +123,5 @@ C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Ass
 C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\bullet.xnb
 C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\exit.xnb
 C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\wingame.xnb
+C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\doublemove.xnb
+C:\Users\Office\Documents\GitHub\game2smstr\bin\Debug\net6.0-windows\Content\Assets\hpbar.xnb

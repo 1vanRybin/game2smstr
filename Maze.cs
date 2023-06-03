@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Drawing2D;
 using Microsoft.Xna.Framework;
 
 namespace MazeEscape;
@@ -41,6 +42,11 @@ public class Maze
         item.Position = nextPoint;
         Add(item, item.Position);
     }
+    public bool InBounds(Vector2 point)
+    {
+        point /= GameController.ElementSize;
+        return point.X>0 && point.Y>0 && point.X<Width && point.Y<Height;
+    }
 
     IMap[,] CreateMaze(string maze)
     {
@@ -64,6 +70,9 @@ public class Maze
                         var monster = new Monster(x, y);
                         result[x, y] = monster;
                         MazeEscape.Monsters.Add(monster);
+                        break;
+                    case 'D':
+                        result[x, y] = new DoubleMove(x, y);
                         break;
                     case 'E':
                         result[x, y] = new Exit(x, y);

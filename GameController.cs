@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-
 namespace MazeEscape;
 
 public static class GameController
@@ -14,6 +13,10 @@ public static class GameController
     public const int ElementSize = 50;
     public const float TurnTime = 100;
     static int currentLvl = 0;
+    static bool IsPlayerMove = true;
+    static Skill ActiveSkill;
+    static bool IsActiveSkill;
+
     static readonly Dictionary<Keys, Vector2> MovePosition = new()
     {
         {Keys.W, -Vector2.UnitY}, 
@@ -21,8 +24,17 @@ public static class GameController
         {Keys.A, -Vector2.UnitX}, 
         {Keys.D, Vector2.UnitX}
     };
+    // расширяемо, можно добавлять скиллы и кнопки их активации
+    static readonly Dictionary<Skill, Action> Skills = new()
+    {
+        { Skill.DoubleMove, ()=>IsPlayerMove = true }
+    };
 
-    static bool IsPlayerMove = true;
+    static readonly Dictionary<Keys, Skill> KeysForSkills = new()
+    {
+        { Keys.E, Skill.DoubleMove }
+    };
+
     static public void ControlPlayer(Player player, Maze maze, ref float turnTimer)
     {
         if (player.Health <= 0)
@@ -37,43 +49,76 @@ public static class GameController
         var pressedKey = keyState.GetPressedKeys().FirstOrDefault();
         var mousePos = Vector2.Floor(mouseState.Position.ToVector2() / ElementSize) * ElementSize;
 
-        if (mouseState.LeftButton == ButtonState.Pressed && player.IsHavePick && !CanMove(maze, mousePos))
+        if (mouseState.LeftButton == ButtonState.Pressed && player.IsHavePick &&
+            maze.GetItem(mousePos) is Wall && maze.InBounds(mousePos))
         {
             maze.Remove(mousePos);
             player.IsHavePick = false;
         }
 
+        if (KeysForSkills.ContainsKey(pressedKey) && player.Skills.Contains(KeysForSkills[pressedKey]))
+        {
+            ActiveSkill = KeysForSkills[pressedKey];
+            IsActiveSkill = true;
+        }
+    
         if (IsPlayerMove && turnTimer >= TurnTime)
         {
-            turnTimer = 0.0f;
-            if (MovePosition.ContainsKey(pressedKey))
+            turnTimer = PlayerMoveCycle(player, maze, mouseState, pressedKey, mousePos);
+        }
+
+    }
+
+    static float PlayerMoveCycle(Player player, Maze maze, MouseState mouseState, Keys pressedKey, Vector2 mousePos)
+    {
+        float turnTimer = 0.0f;
+        if (MovePosition.ContainsKey(pressedKey))
+        {
+            NextPlayerTurn(player, maze, pressedKey);
+            if (IsActiveSkill)
             {
-                var possiblePoint = player.Position + MovePosition[pressedKey] * ElementSize;
-                if (CanMove(maze, possiblePoint))
+                player.Skills.Remove(ActiveSkill);
+                Skills[ActiveSkill].Invoke();
+                IsActiveSkill = false;
+            }
+        }
+
+        if (mouseState.RightButton == ButtonState.Pressed && player.Bullets > 0 &&
+        (mousePos.X == player.Position.X || mousePos.Y == player.Position.Y))
+        {
+            MazeEscape.Bullet = new(player.Position, mousePos);
+            IsPlayerMove = false;
+            player.Bullets--;
+        }
+
+        return turnTimer;
+    }
+
+    static void NextPlayerTurn(Player player, Maze maze, Keys pressedKey)
+    {
+        var possiblePoint = player.Position + MovePosition[pressedKey] * ElementSize;
+        if (CanMove(maze, possiblePoint))
+        {
+            if (maze.GetItem(possiblePoint) is Exit)
+            {
+                currentLvl++;
+                if (currentLvl < MazeEscape.Mazes.Count)
+                    MazeEscape.CurrentMaze = new Maze(File.ReadAllText(MazeEscape.Mazes[currentLvl]));
+                else
                 {
-                    if (maze.GetItem(possiblePoint) is Exit)
-                    {
-                        currentLvl++;
-                        if (currentLvl < MazeEscape.Mazes.Count)
-                            MazeEscape.CurrentMaze = new Maze(File.ReadAllText(MazeEscape.Mazes[currentLvl]));
-                        else
-                        {
-                            currentLvl = 0;
-                            MazeEscape.CurrentMode = Mode.WinGame;
-                        }
-                    }
-                    maze.Rearrange(player, possiblePoint);
-                    IsPlayerMove = false;
+                    currentLvl = 0;
+                    MazeEscape.CurrentMode = Mode.WinGame;
                 }
             }
 
-            if (mouseState.RightButton == ButtonState.Pressed && player.Bullets > 0 &&
-            (mousePos.X == player.Position.X || mousePos.Y == player.Position.Y))
+            if(maze.GetItem(possiblePoint) is ISkill skill)
             {
-                MazeEscape.Bullet = new(player.Position, mousePos);
-                IsPlayerMove = false;
-                player.Bullets--;
+                maze.Remove(possiblePoint);
+                player.Skills.Add(skill.Description);
             }
+
+            maze.Rearrange(player, possiblePoint);
+            IsPlayerMove = false;
         }
     }
 
