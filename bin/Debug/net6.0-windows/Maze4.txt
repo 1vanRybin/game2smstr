@@ -1,0 +1,16 @@
+111111111111111111111111111111111111
+1PDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD1
+1D 11111    1     1      11111    D1
+1D   1      1     1      1        D1
+1D   1      1111111      11111    D1
+1D   1      1     1      1        D1
+1D   1      1     1      11111    D1
+1D        MMMMMMMMMMMM            D1
+1D 11111    11    1      111      D1
+1D 1        1 1   1      1  11    D1
+1D 11111    1  1  1      1   1    D1
+1D 1        1   1 1      1  11    D1
+1D 11111    1    11      111      D1
+1D                                D1
+1DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDE1
+111111111111111111111111111111111111

@@ -1,0 +1,8 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/Office/Documents/GitHub/game2smstr/Content/Assets/bullet.png","C:/Users/Office/Documents/GitHub/game2smstr/Content/bin/Windows/Assets/bullet.xnb","TextureProcessor","Texture2DContent",25265,14745685,0,7049282
+"C:/Users/Office/Documents/GitHub/game2smstr/Content/Assets/exit.png","C:/Users/Office/Documents/GitHub/game2smstr/Content/bin/Windows/Assets/exit.xnb","TextureProcessor","Texture2DContent",91582,3411109,0,1177723
+"C:/Users/Office/Documents/GitHub/game2smstr/Content/Assets/maze.png","C:/Users/Office/Documents/GitHub/game2smstr/Content/bin/Windows/Assets/maze.xnb","TextureProcessor","Texture2DContent",35221,4194389,0,1325646
+"C:/Users/Office/Documents/GitHub/game2smstr/Content/Assets/monster.png","C:/Users/Office/Documents/GitHub/game2smstr/Content/bin/Windows/Assets/monster.xnb","TextureProcessor","Texture2DContent",95789,719825,0,0305343
+"C:/Users/Office/Documents/GitHub/game2smstr/Content/Assets/player.png","C:/Users/Office/Documents/GitHub/game2smstr/Content/bin/Windows/Assets/player.xnb","TextureProcessor","Texture2DContent",136729,1550773,0,0442484
+"C:/Users/Office/Documents/GitHub/game2smstr/Content/Assets/Text.spritefont","C:/Users/Office/Documents/GitHub/game2smstr/Content/bin/Windows/Assets/Text.xnb","FontDescriptionProcessor","SpriteFontContent",2071,574521,7,4075003
+"C:/Users/Office/Documents/GitHub/game2smstr/Content/Assets/wall.png","C:/Users/Office/Documents/GitHub/game2smstr/Content/bin/Windows/Assets/wall.xnb","TextureProcessor","Texture2DContent",265,4181,0,0040937
